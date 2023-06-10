@@ -10,7 +10,10 @@ const controlTasks = (event: Event) => {
   if (!event.target) return;
 
   const data = formTaskView.getData();
+
   if (!data) return;
+
+  if (data.title === '') return alert('Поле не заполнено!');
 
   model.addTask(data);
 
