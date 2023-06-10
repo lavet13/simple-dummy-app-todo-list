@@ -1,14 +1,27 @@
-import { v4 as uuidv4 } from 'uuid';
-import { Item, State, TaskData } from './types';
+import { nanoid } from 'nanoid';
+import { State, TaskData } from './types';
+import { produce } from 'immer';
 
-export const state: State = {
+export let state: State = {
   items: [],
 };
 
 export const addTask = (task: TaskData) => {
-  state.items = [...state.items, { id: uuidv4(), ...task }];
+  state = produce(state, draftState => {
+    draftState.items.push({ id: nanoid(), ...task });
+  });
+
+  return state;
 };
 
 export const deleteTask = (itemToDeleteId: string) => {
-  state.items = state.items.filter(({ id }) => id !== itemToDeleteId);
+  state = produce(state, draftState => {
+    const { items } = draftState;
+    items.splice(
+      items.findIndex(item => item.id === itemToDeleteId),
+      1
+    );
+  });
+
+  return state;
 };

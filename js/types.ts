@@ -8,7 +8,7 @@ export type TaskData = {
 };
 
 export type State = {
-  items: Item[];
+  readonly items: Item[];
 };
 
 export type Subscriber<T, S> = { (this: T, ev: S): any };

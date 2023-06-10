@@ -15,9 +15,10 @@ const controlTasks = (event: Event) => {
 
   if (data.title === '') return alert('Поле не заполнено!');
 
-  model.addTask(data);
+  const { items } = model.addTask(data);
+  console.log(items);
 
-  tasksView.render(model.state.items);
+  tasksView.render(items);
 
   formTaskView.reset();
 };
@@ -26,9 +27,9 @@ const controlDeleteTask = (listItem: HTMLLIElement) => {
   const itemToDeleteId = listItem.dataset.id;
   if (!itemToDeleteId) return;
 
-  model.deleteTask(itemToDeleteId);
+  const { items } = model.deleteTask(itemToDeleteId);
 
-  tasksView.render(model.state.items);
+  tasksView.render(items);
 };
 
 function init() {
