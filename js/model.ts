@@ -8,10 +8,18 @@ export let state: State = {
 
 export const addTask = (task: TaskData) => {
   state = produce(state, draftState => {
-    draftState.items.push({ id: nanoid(), ...task });
+    draftState.items.push({ id: nanoid(), ...task, done: false });
   });
+};
 
-  return state;
+export const markTask = (itemToMarkId: string) => {
+  state = produce(state, draftState => {
+    const todo = draftState.items.find(item => item.id === itemToMarkId);
+
+    if (todo) {
+      todo.done = !todo.done;
+    }
+  });
 };
 
 export const deleteTask = (itemToDeleteId: string) => {
@@ -22,6 +30,4 @@ export const deleteTask = (itemToDeleteId: string) => {
       1
     );
   });
-
-  return state;
 };

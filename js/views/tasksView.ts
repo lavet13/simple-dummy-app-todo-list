@@ -4,6 +4,26 @@ class TasksView {
   #parentElement = document.querySelector<HTMLUListElement>('.tasks');
   #data!: Item[];
 
+  markItemHandler = (subscriber: Subscriber<null, HTMLLIElement>) => {
+    if (!this.#parentElement) return;
+
+    this.#parentElement.addEventListener('click', event => {
+      if (
+        !(event.target as HTMLUListElement).closest('span') ||
+        !this.#parentElement
+      )
+        return;
+
+      const span = event.target as HTMLSpanElement;
+
+      if (!span.parentElement) return;
+
+      const listItem = span.parentElement as HTMLLIElement;
+
+      subscriber.call(null, listItem);
+    });
+  };
+
   deleteItemHandler = (subscriber: Subscriber<null, HTMLLIElement>) => {
     if (!this.#parentElement) return;
 
@@ -39,9 +59,11 @@ class TasksView {
   #generateMarkup = () => {
     return this.#data
       .map(
-        ({ id, title }) => `
+        ({ id, title, done }) => `
         <li data-id="${id}">
-          <span>${title}</span><button type="button">&times;</button>
+          <span ${
+            done ? "class='marked'" : ''
+          }>${title}</span><button type="button">&times;</button>
         </li>
     `
       )

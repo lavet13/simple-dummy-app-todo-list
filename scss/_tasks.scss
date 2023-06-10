@@ -24,6 +24,10 @@
 
     span {
       flex: 0 0 90%;
+
+      &.marked {
+        text-decoration: line-through;
+      }
     }
 
     button {
