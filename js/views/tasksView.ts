@@ -2,7 +2,7 @@ import { Item, Subscriber } from '../types';
 
 class TasksView {
   #parentElement = document.querySelector<HTMLUListElement>('.tasks');
-  #data!: Item[];
+  #data!: Map<string, Item>;
 
   markItemHandler = (subscriber: Subscriber<null, HTMLLIElement>) => {
     if (!this.#parentElement) return;
@@ -44,7 +44,7 @@ class TasksView {
     });
   };
 
-  render = (data: Item[]) => {
+  render = (data: Map<string, Item>) => {
     try {
       if (!this.#parentElement) throw new Error("parentElement doesn't exist");
       this.#data = data;
@@ -57,9 +57,9 @@ class TasksView {
   };
 
   #generateMarkup = () => {
-    return this.#data
+    return [...this.#data.entries()]
       .map(
-        ({ id, title, done }) => `
+        ([id, { title, done }]) => `
         <li data-id="${id}">
           <span ${
             done ? "class='marked'" : ''

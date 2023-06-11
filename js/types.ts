@@ -1,5 +1,4 @@
 export type Item = {
-  id: string;
   title: string;
   done: boolean;
 };
@@ -9,7 +8,7 @@ export type TaskData = {
 };
 
 export type State = {
-  readonly items: Item[];
+  readonly items: Map<string, Item>;
 };
 
 export type Subscriber<T, S> = { (this: T, ev: S): any };
